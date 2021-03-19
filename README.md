@@ -1,8 +1,8 @@
-<p align="center"><img src="https://raw.githubusercontent.com/Ibrahimrahhal/Teamslounge-FE/main/public/logo-github.png" alt="teamslounge log" width="300px"></p>
+<p align="center"><img src="https://raw.githubusercontent.com/Ibrahimrahhal/Crooka-lab/issue-2/assets/images/logo-center.png" alt="teamslounge log" width="300px"></p>
 
 # Crooka Lab
 
-Crooka Lab is an e-government service that is meant to automate the regular procedure of opening an accident case/ report AKA "crooka".
+Crooka Lab is an e-government service that is meant to automate the regular procedure of opening an accident case/ report AKA "crooka report".
 
 ## Getting Started
 
