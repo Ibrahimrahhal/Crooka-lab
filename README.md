@@ -1,4 +1,4 @@
-<p align="center"><img src="https://raw.githubusercontent.com/Ibrahimrahhal/Crooka-lab/issue-2/assets/images/logo-center.png" alt="teamslounge log" width="300px"></p>
+<p align="center"><img src="https://raw.githubusercontent.com/Ibrahimrahhal/Crooka-lab/issue-2/assets/images/screen.png" alt="teamslounge log" width="300px"></p>
 
 # Crooka Lab
 
