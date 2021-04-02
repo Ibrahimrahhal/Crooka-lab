@@ -33,9 +33,9 @@ namespace App {
           loading={loading} 
           render={() => {
             if(props.state){
-              return <Text>Ibrahim is cool</Text>
+              return <Text>Loggedin</Text>
             } else {
-              return <Text>Nothing is here</Text>
+              return <Text>Not Loggedin</Text>
             }
           }}
         />              
