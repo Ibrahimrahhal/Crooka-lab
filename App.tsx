@@ -1,64 +1,68 @@
-import { StatusBar } from 'expo-status-bar';
-import React, { Component } from 'react';
-import { StyleSheet, View, I18nManager } from 'react-native';
-import FirstLevelStackNavigator from './screens/firstLevelStackNavigator';
+import React, { useState, useEffect } from 'react';
+import { StyleSheet, View, I18nManager, Text } from 'react-native';
 import 'react-native-gesture-handler';
 import { NavigationContainer } from '@react-navigation/native';
 import { ThemeProvider } from 'react-native-elements';
-import * as Font from 'expo-font';
 import config from './config';
-import Text from './shared/Text';
-import {Provider} from 'react-redux';
-import store from './app-state/store';
+import SplashScreen from './shared/components/splash-screen';
+import LazyNavigator from './navigators/lazy-navigator';
+import { isLoggedIn, isFirstOpen } from './services/auth-service';
+import { Provider, connect } from 'react-redux';
+import store from './store';
+import AuthStateAction from './store/actions/auth-state';
+namespace App {
+  const styles = StyleSheet.create({
+    container: {
+      flex: 1,
+      backgroundColor: '#fff',
+      direction:'rtl'
+    },
+  });
+  const base = (props) => {
+    const [loading, setLoading] = useState(true);
+    useEffect(() => {
+      isLoggedIn().then((isLoggedIn) => {
+        setLoading(false);
+        props.changeLoginState(isLoggedIn);
+      });
+    }, []);
 
-let customFonts = {
-  'custom-regular': require('./assets/Cairo-Regular.ttf'),
-  'custom-bold': require('./assets/Cairo-Bold.ttf'),
-  
-};
-export default class App extends Component {
-  state = {
-    fontsLoaded: false,
-  };
-constructor(props:any){
-  super(props);
-  I18nManager.forceRTL(true);
-}
-  async _loadFontsAsync() {
-    await Font.loadAsync(customFonts);
-    this.setState({ fontsLoaded: true });
-  }
-
-  componentDidMount() {
-    this._loadFontsAsync();
-  }
-  render() {
-    try{
-      return (
-        <NavigationContainer>
-          <Provider store={store}>
-            <ThemeProvider theme={config.globalTheme as any}>
-              <View style={styles.container}>
-                {this.state.fontsLoaded &&(<FirstLevelStackNavigator/>)} 
-              </View>
-            </ThemeProvider>
-          </Provider>
-        </NavigationContainer>
-      );
-    }catch(e){
-      console.log(e.toString())
-      return (
+    return (
       <View style={styles.container}>
-        <Text h5> {e.toString()}</Text>
-      </View>)
-    }
-}
+        <LazyNavigator 
+          loading={loading} 
+          render={() => {
+            if(props.state){
+              return <Text>Loggedin</Text>
+            } else {
+              return <Text>Not Loggedin</Text>
+            }
+          }}
+        />              
+      </View>
+    );
+  }
+
+  export const component = connect( 
+    (state: any) => ({state:  state && state.auth && state.auth.state}),
+    (dispatch) => ({ changeLoginState: (state:boolean) => dispatch(AuthStateAction(state)) })
+    )(base);
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    direction:'rtl'
-  },
-});
+
+namespace entry {
+  I18nManager.forceRTL(true);
+  export const component =  () => {
+      return (        
+      <NavigationContainer>
+        <Provider store={store}>
+          <ThemeProvider theme={config.globalTheme as any}>
+            <App.component />
+          </ThemeProvider>
+        </Provider>
+      </NavigationContainer>
+      );
+  } 
+}
+
+export default entry.component;
