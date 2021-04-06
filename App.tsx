@@ -1,15 +1,36 @@
-import React, { useState, useEffect } from 'react';
-import { StyleSheet, View, I18nManager, Text } from 'react-native';
 import 'react-native-gesture-handler';
+import React, { useState, useEffect } from 'react';
+import * as Font from 'expo-font';
+import { StyleSheet, View, I18nManager } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { ThemeProvider } from 'react-native-elements';
-import config from './config';
-import SplashScreen from './shared/components/splash-screen';
-import LazyNavigator from './navigators/lazy-navigator';
-import { isLoggedIn, isFirstOpen } from './services/auth-service';
 import { Provider, connect } from 'react-redux';
-import store from './store';
+import LazyNavigator from './navigators/lazy-navigator';
 import AuthStateAction from './store/actions/auth-state';
+import AuthNavigator from './navigators/auth-navigator';
+import GetStartedNavigator from './navigators/get-started-navigator';
+import HomeNavigator from './navigators/home-root-navigator';
+import { isLoggedIn, isFirstOpen } from './services/auth-service';
+import store from './store';
+import config from './config';
+
+
+namespace Fonts {
+  /* using generic name to make it easier to change font type in future */
+  const fonts = {
+    'custom-regular': require('./assets/fonts/Cairo-Regular.ttf'),
+    'custom-bold': require('./assets/fonts/Cairo-Bold.ttf'),
+  };
+
+  async function load() {
+    await Font.loadAsync(fonts);
+  }
+
+  export function init() {
+    return load();
+  }
+
+}
 namespace App {
   const styles = StyleSheet.create({
     container: {
@@ -20,10 +41,12 @@ namespace App {
   });
   const base = (props) => {
     const [loading, setLoading] = useState(true);
+    const [_isFirstOpen, setIsFirstOpen] = useState(true);
     useEffect(() => {
-      isLoggedIn().then((isLoggedIn) => {
-        setLoading(false);
+      Promise.all([isLoggedIn(), isFirstOpen(), Fonts.init()]).then(([isLoggedIn, isFirstOpen]) => {
         props.changeLoginState(isLoggedIn);
+        setIsFirstOpen(isFirstOpen);
+        setLoading(false);
       });
     }, []);
 
@@ -33,9 +56,11 @@ namespace App {
           loading={loading} 
           render={() => {
             if(props.state){
-              return <Text>Loggedin</Text>
+              return <HomeNavigator />;
+            } else if(_isFirstOpen){
+              return <GetStartedNavigator />;
             } else {
-              return <Text>Not Loggedin</Text>
+              return <AuthNavigator />;
             }
           }}
         />              
