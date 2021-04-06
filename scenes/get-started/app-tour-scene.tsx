@@ -30,18 +30,21 @@ const Animation: {Ref: any, play: any} = {
         try{
             if(this.Ref)
                 this.Ref.play();
-        }catch{
+        }catch(e) {
+            console.log(e.toString())
             console.log('not inited')
         }
     }
 }
-const slideShouldActivate = (Platform.OS === 'ios' ? 2 : 0);
+const slideShouldActivate = (Platform.OS !== 'ios' ? 2 : 0);
+const lastSlide = 2 - slideShouldActivate;
+
 export default (props) => {
     const [activeSlide, setActiveSlide] = useState(slideShouldActivate);
     var prevActiveSlide;
     if(!prevActiveSlide) prevActiveSlide = useRef(activeSlide);
     useEffect(() => {
-        setTimeout(() => Animation.play(), 2000);
+        setTimeout(() => Animation.play(), 1000);
     }, []);
     useEffect(() => {
         if(prevActiveSlide == slideShouldActivate && activeSlide != slideShouldActivate)
@@ -54,13 +57,13 @@ export default (props) => {
             <View style={styles.heighContainer}>
                 <View style={styles.innerView}>
                 <AppTourSwiper 
-                    activeSlide={index => setActiveSlide(index)} 
+                    activeSlide={index => setTimeout(() => setActiveSlide(index), 0)} 
                     navigate={()=>{
                         props.navigation.replace('loginSignup');
                     }}/>
                 </View>
                 {
-                    activeSlide != slideShouldActivate &&
+                    activeSlide != lastSlide && (
                     <View style={{...styles.swipHintContainer} as any}>
                         <LottieView
                             ref={animation => {
@@ -71,10 +74,11 @@ export default (props) => {
                                 alignItems:"center"
                             }}
                             loop={false}
-                            onAnimationFinish={() => setTimeout(() => Animation.play(), 2000)}
+                            onAnimationFinish={() => setTimeout(() => Animation.play(), 1000)}
                             source={SwipeAnimation}
                         />
                     </View>
+                    )
                 }
             </View>
             <StatusBar style={'light'}/>

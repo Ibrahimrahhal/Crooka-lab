@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, StyleSheet, Dimensions, Platform } from 'react-native';
 import Swiper from 'react-native-swiper';
 import LottieView from 'lottie-react-native';
@@ -31,7 +31,6 @@ const styles = StyleSheet.create({
     },
     upperSliderHalf:{
         height:'50%',
-        // backgroundColor:'rgba(0,0,0,0.1)',
         width:'100%',
         justifyContent:'flex-end',
         alignItems:'center',
@@ -61,7 +60,7 @@ const styles = StyleSheet.create({
         bottom:'10%',
     }
 });
-const slideShouldActivate = (Platform.OS === 'ios' ? 2 : 0);
+const slideShouldActivate = (Platform.OS !== 'ios' ? 2 : 0);
 const Animation: {Ref: any, play: any} = {
     Ref: null,
     play() {
@@ -75,6 +74,16 @@ const Animation: {Ref: any, play: any} = {
 }
 export default (props) => {
     const [visitedArray, SetVisitedArray] = useState(Array(3).fill(false));
+    useEffect(() => {
+        const initialVisitedArray = [...visitedArray];
+        initialVisitedArray[slideShouldActivate] = true;
+        SetVisitedArray(initialVisitedArray);
+    }, []);
+    useEffect(() => {
+        if(visitedArray[2-slideShouldActivate]) {
+            Animation.play();
+        }
+    }, [visitedArray]);
     return (
         <View style={styles.upperLevelContainer}>
             <View style={styles.safeArea}>
@@ -86,26 +95,26 @@ export default (props) => {
                 onIndexChanged={(index)=>{
                     props.activeSlide(index);
                     visitedArray[index] = true;
-                    if(index == slideShouldActivate)
-                        setTimeout(() =>  Animation.play(),300)
-                    SetVisitedArray([...visitedArray]);
+                    setTimeout(() => SetVisitedArray([...visitedArray]))
                 }}
                 showsPagination={false}
                 >
                     <View style={styles.slideContainer}>
-                        <Animatable.View style={styles.slideContainer} animation={'fadeIn'}>
-                            <Animatable.View style={styles.upperSliderHalf} animation={'slideInDown'} delay={200}>
-                                <TourFirstSlide height={Dimensions.get('window').height *0.5*0.8} width={Dimensions.get('window').width}/>
+                        <NgIf if={visitedArray[slideShouldActivate]}>
+                            <Animatable.View style={styles.slideContainer} animation={'fadeIn'}>
+                                <Animatable.View style={styles.upperSliderHalf} animation={'slideInDown'} delay={200}>
+                                    <TourFirstSlide height={Dimensions.get('window').height *0.5*0.8} width={Dimensions.get('window').width}/>
+                                </Animatable.View>
+                                <View style={styles.secondHalf}>
+                                    <Text big bold style={{...styles.text}}>
+                                        كروكتك جاهزة ببضع خطوات بسيطة
+                                    </Text>
+                                    <Text  h5 style={{...styles.text, ...styles.smallText}}>
+                                    عند وقوع اي حادث سير بسيط يمكنك البدآ بفتح التطبيق والابلاغ عن الحادث عن طريق ادخال بيانات المركبات٫ التقاط بعض الصور ويتنهى الامر بوصول تقرير الكروكا لكلا الطرفين
+                                    </Text>
+                                </View>
                             </Animatable.View>
-                            <View style={styles.secondHalf}>
-                                <Text big bold style={{...styles.text}}>
-                                    كروكتك جاهزة ببضع خطوات بسيطة
-                                </Text>
-                                <Text  h5 style={{...styles.text, ...styles.smallText}}>
-                                عند وقوع اي حادث سير بسيط يمكنك البدآ بفتح التطبيق والابلاغ عن الحادث عن طريق ادخال بيانات المركبات٫ التقاط بعض الصور ويتنهى الامر بوصول تقرير الكروكا لكلا الطرفين
-                                </Text>
-                            </View>
-                        </Animatable.View>
+                        </NgIf>
                     </View>
                     <View style={styles.slideContainer}>
                         <NgIf if={visitedArray[1]}>
@@ -127,11 +136,11 @@ export default (props) => {
                         </NgIf>
                     </View>
                     <View style={styles.slideContainer}>
-                        <NgIf if={visitedArray[slideShouldActivate]}>
+                        <NgIf if={visitedArray[2-slideShouldActivate]}>
                             <Animatable.View style={styles.slideContainer} animation={'fadeIn'}>
                                 <Animatable.View style={styles.upperSliderHalf} animation={'slideInDown'} delay={200}>
                                     <LottieView
-                                        ref={animation => Animation.Ref = animation}
+                                        ref={(animation) => Animation.Ref = animation}
                                         style={{
                                             height: Dimensions.get('window').height *0.5*0.8,
                                             alignItems:"center"
