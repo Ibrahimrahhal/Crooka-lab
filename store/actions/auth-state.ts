@@ -1,1 +1,1 @@
-export default (state:boolean) => ({ type: 'auth-state', payload: { state } });
+export default (state: boolean) => ({ type: "auth-state", payload: { state } });

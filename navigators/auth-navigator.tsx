@@ -1,6 +1,6 @@
-import React from 'react';
-import { Text } from 'react-native';
+import React from "react";
+import { Text } from "react-native";
 
 export default (props) => {
-    return (<Text>this is auth</Text>);
-}
+  return <Text>this is auth</Text>;
+};

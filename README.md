@@ -3,16 +3,15 @@
 # Crooka Lab
 
 Crooka Lab is an e-government service that is meant to automate the regular procedure of opening an accident case/ report AKA "crooka report".
+
 <p align="center"><img src="https://raw.githubusercontent.com/Ibrahimrahhal/Crooka-lab/main/assets/images/screen.png" alt="crooka lab screen shot" width="300px"></p>
 
 ## Getting Started
 
 You can benift of the app services by downloading it from app store & google play when this gets approved from the jordanian goverment
 
-
-
-
 ## Built With
+
 <p align="left">
 	<a href="https://aws.amazon.com/amplify/" target="_blank">
 		<img src="https://docs.amplify.aws/assets/logo-dark.svg" alt="amplify" width="40" height="40"/>
@@ -105,14 +104,12 @@ You can benift of the app services by downloading it from app store & google pla
 
 ## Contributing
 
-We are not accepting any pull requests, for now, if you had any suggestions please message us here: [Ibrahim Rahhal - FB Page](https://www.facebook.com/ibrahim.ra7al/). Thank you. 
+We are not accepting any pull requests, for now, if you had any suggestions please message us here: [Ibrahim Rahhal - FB Page](https://www.facebook.com/ibrahim.ra7al/). Thank you.
 
 ## Versioning
 
-Current Versoin: Beta, good amount of work need to be done. 
+Current Versoin: Beta, good amount of work need to be done.
 
 ## Authors
 
-* **Ibrahim Rahhal** 
-
-
+- **Ibrahim Rahhal**
