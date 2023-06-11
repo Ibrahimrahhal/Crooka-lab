@@ -1,9 +1,8 @@
 import React, { Component, Fragment } from "react";
 import { View, StyleSheet, Platform } from "react-native";
 import config from "../../config";
-import Text from "../../shared/Text";
 import LottieView from "lottie-react-native";
-import SwipeAnimation from "../../animations/swipe";
+import SwipeAnimation from "../../assets/animations/swipe";
 import AppTourSwiper from "./appTourSwiper";
 import { StatusBar } from "expo-status-bar";
 class appTour extends Component<any, any> {

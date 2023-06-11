@@ -1,7 +1,7 @@
 import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
-import GetStartedScene from "../scenes/get-started/get-started-scene";
-import AppTourScene from "../scenes/get-started/app-tour-scene";
+import GetStartedScene from "../scenes/get-started";
+import AppTourScene from "../scenes/app-tour";
 const Stack = createStackNavigator();
 
 export default (props) => {
